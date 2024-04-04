@@ -4,7 +4,7 @@ interface IBlog extends Document {
   title: string;
   description: string;
   image: string;
-  comments?: string;
+  comments?: string[];
 }
 
 const BlogSchema: Schema = new Schema({
