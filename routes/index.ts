@@ -6,7 +6,12 @@ import {
   updateBlog,
 } from "../controllers/blogController";
 import { commentList, createComment } from "../controllers/commentController";
-import { createUser } from "../controllers/userController";
+import {
+  createUser,
+  loginUser,
+  usersList,
+} from "../controllers/userController";
+import { authenticateToken } from "../middleware/authenticateToken";
 const router = express.Router();
 
 /* GET home page. */
@@ -20,8 +25,10 @@ router.put("/blogs/:id", updateBlog);
 router.delete("/blogs/:id", deleteBlog);
 
 router.get("/comments", commentList);
-router.post("/comments", createComment);
+router.post("/comments/:id", authenticateToken, createComment);
 
 router.post("/sign-up", createUser);
+router.post("/log-in", loginUser);
+router.get("/users", authenticateToken, usersList);
 
 export default router;
