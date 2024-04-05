@@ -2,7 +2,6 @@
   "name": "my-brand-mutsinzi-api",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "main": "app.ts",
   "scripts": {
     "build": "tsc",
