@@ -1,5 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "./api-documentation.json";
 
 import indexRouter from "./routes/index";
 
@@ -14,6 +16,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api", indexRouter);
 
 app.listen(3000, () => console.log("app listening on port 3000!"));

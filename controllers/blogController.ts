@@ -15,12 +15,9 @@ export const createBlog = async (
   res: Response,
   next: NextFunction
 ) => {
-  const blog = new Blog({
-    title: req.body.title,
-    description: req.body.description,
-    image: req.body.image,
-    comments: req.body.comments,
-  });
+  const { title, description, comments } = req.body;
+  const image = req.file ? req.file.path : ""; // Assuming 'image' is the name of the file field
+  const blog = new Blog({ title, description, image, comments });
 
   await blog.save();
   res.status(200).json({ message: "blog saved successfully" });

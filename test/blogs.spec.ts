@@ -2,8 +2,8 @@ import { expect } from "chai";
 import { describe, it } from "mocha";
 import { Request, Response } from "express";
 import sinon, { SinonStub } from "sinon";
-import * as blogController from "./controllers/blogController";
-import Blog from "./models/blog";
+import * as blogController from "../controllers/blogController";
+import Blog from "../models/blog";
 import { NextFunction } from "connect";
 
 describe("Blog Controller", () => {
