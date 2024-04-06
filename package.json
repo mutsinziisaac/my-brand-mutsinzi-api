@@ -2,12 +2,11 @@
   "name": "my-brand-mutsinzi-api",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "main": "app.ts",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/app.js",
-    "devstart": "nodemon app.ts",
+    "start": "ts-node app.ts",
+    "dev": "nodemon app.ts",
     "test": "mocha --require ts-node/register test/*.test.ts"
   },
   "dependencies": {
