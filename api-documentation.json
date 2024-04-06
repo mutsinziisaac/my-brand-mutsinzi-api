@@ -8,6 +8,10 @@
   "servers": [
     {
       "url": "http://localhost:3000/api"
+    },
+    {
+      "url": "https://my-brand-mutsinzi-api.onrender.com/api",
+      "description": "Deployed server on Render"
     }
   ],
   "components": {
