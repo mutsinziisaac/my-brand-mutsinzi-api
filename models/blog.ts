@@ -5,14 +5,15 @@ interface IBlog extends Document {
   description: string;
   image: Buffer;
   comments?: string[];
+  likes: number;
 }
 
 const BlogSchema: Schema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   image: { type: Buffer, required: true },
-  comments: [{ type: Schema.Types.ObjectId, ref: "Comment", required: true }],
+  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
+  likes: { type: Number, default: 0 },
 });
 
-// Export model
 export default mongoose.model<IBlog>("Blog", BlogSchema);

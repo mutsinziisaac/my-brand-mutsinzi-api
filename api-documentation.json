@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Todo API",
+    "title": "My-Blog-Mutsinzi API",
     "version": "1.0.0",
-    "description": "API for managing todos and users"
+    "description": "API for managing blogs,comments,messages and users"
   },
   "servers": [
     {
@@ -28,9 +28,17 @@
       "BearerAuth": []
     }
   ],
+  "tags": [
+    { "name": "Blogs", "description": "Operations related to blogs" },
+    { "name": "Liking", "description": "Operations related to liking" },
+    { "name": "Comments", "description": "Operations related to comments" },
+    { "name": "Messages", "description": "Operations related to messages" },
+    { "name": "Users", "description": "Operations related to users" }
+  ],
   "paths": {
     "/blogs": {
       "get": {
+        "tags": ["Blogs"],
         "description": "Get a list of all blogs",
         "responses": {
           "200": {
@@ -56,6 +64,7 @@
         }
       },
       "post": {
+        "tags": ["Blogs"],
         "description": "Create a new blog",
         "requestBody": {
           "required": true,
@@ -66,8 +75,7 @@
                 "properties": {
                   "title": { "type": "string" },
                   "description": { "type": "string" },
-                  "image": { "type": "string", "format": "binary" },
-                  "comments": { "type": "array" }
+                  "image": { "type": "string", "format": "binary" }
                 }
               }
             }
@@ -92,6 +100,7 @@
     },
     "/blogs/{id}": {
       "put": {
+        "tags": ["Blogs"],
         "description": "Update an existing blog",
         "parameters": [
           {
@@ -134,6 +143,7 @@
         }
       },
       "delete": {
+        "tags": ["Blogs"],
         "description": "Delete a blog",
         "parameters": [
           {
@@ -163,6 +173,7 @@
     },
     "/blogs/{id}/comments": {
       "post": {
+        "tags": ["Comments"],
         "description": "Create a new comment for a blog",
         "parameters": [
           {
@@ -205,6 +216,7 @@
     },
     "/comments": {
       "get": {
+        "tags": ["Comments"],
         "description": "Get a list of all comments",
         "responses": {
           "200": {
@@ -228,12 +240,34 @@
         }
       }
     },
-    "/users": {
-      "get": {
-        "description": "Get a list of all users",
+    "/blogs/{id}/like": {
+      "post": {
+        "tags": ["Liking"],
+        "summary": "Like blog",
+        "description": "like a blog blog.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "ID of the blog to like"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "List of users",
+            "description": "Blog liked"
+          }
+        }
+      }
+    },
+    "/messages": {
+      "get": {
+        "tags": ["Messages"],
+        "description": "Get a list of all messages",
+        "responses": {
+          "200": {
+            "description": "List of messages",
             "content": {
               "application/json": {
                 "schema": {
@@ -242,7 +276,9 @@
                     "type": "object",
                     "properties": {
                       "_id": { "type": "string" },
-                      "username": { "type": "string" }
+                      "name": { "type": "string" },
+                      "email": { "type": "string" },
+                      "message": { "type": "string" }
                     }
                   }
                 }
@@ -252,7 +288,8 @@
         }
       },
       "post": {
-        "description": "Create a new user",
+        "tags": ["Messages"],
+        "description": "Create a new message",
         "requestBody": {
           "required": true,
           "content": {
@@ -260,8 +297,9 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "username": { "type": "string" },
-                  "password": { "type": "string" }
+                  "name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "message": { "type": "string" }
                 }
               }
             }
@@ -269,7 +307,37 @@
         },
         "responses": {
           "200": {
-            "description": "User created",
+            "description": "message created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages/{id}": {
+      "delete": {
+        "tags": ["Messages"],
+        "description": "Delete a message",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "ID of the message to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "message deleted",
             "content": {
               "application/json": {
                 "schema": {
@@ -286,6 +354,7 @@
     },
     "/sign-up": {
       "post": {
+        "tags": ["Users"],
         "description": "Create a new user",
         "requestBody": {
           "required": true,
@@ -320,6 +389,7 @@
     },
     "/log-in": {
       "post": {
+        "tags": ["Users"],
         "description": "Authenticate and generate access token",
         "requestBody": {
           "required": true,
