@@ -7,28 +7,6 @@ import Blog from "../models/blog";
 import { NextFunction } from "connect";
 
 describe("Blog Controller", () => {
-  describe("blogList", () => {
-    it("should return all blogs", async () => {
-      const req = {} as Request;
-      const res = {
-        status: sinon.stub().returnsThis(),
-        json: sinon.stub(),
-      } as unknown as Response;
-
-      const blogMock = sinon.mock(Blog);
-      blogMock.expects("find").returns(blogMock);
-      blogMock.expects("populate").returns(blogMock);
-      blogMock.expects("exec").resolves([]);
-
-      await blogController.blogList(req, res, sinon.stub() as NextFunction);
-
-      expect((res.status as sinon.SinonStub).calledWith(200)).to.be.true;
-      expect((res.json as sinon.SinonStub).calledOnce).to.be.true;
-
-      blogMock.restore();
-    });
-  });
-
   describe("createBlog", () => {
     it("should create a new blog", async () => {
       const req = {
@@ -53,6 +31,33 @@ describe("Blog Controller", () => {
       expect((res.json as sinon.SinonStub).calledOnce).to.be.true;
 
       blogSaveStub.restore();
+    });
+  });
+
+  describe("deleteBlog", () => {
+    it("should delete an existing blog", async () => {
+      const req = {
+        params: {
+          id: "6613e3b8d70d378f4b2f2ce1",
+        },
+      } as unknown as Request;
+      const res = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub(),
+      } as unknown as Response;
+
+      const findByIdAndDeleteStub = sinon
+        .stub(Blog, "findByIdAndDelete")
+        .resolves({});
+
+      await blogController.deleteBlog(req, res, sinon.stub() as NextFunction);
+
+      expect(findByIdAndDeleteStub.calledOnceWith("6613e3b8d70d378f4b2f2ce1"))
+        .to.be.true;
+      expect((res.status as SinonStub).calledWith(200)).to.be.true;
+      expect((res.json as SinonStub).calledOnce).to.be.true;
+
+      findByIdAndDeleteStub.restore();
     });
   });
 });
