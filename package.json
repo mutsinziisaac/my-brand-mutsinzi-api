@@ -2,10 +2,10 @@
   "name": "my-brand-mutsinzi-api",
   "version": "0.0.0",
   "private": true,
-  "main": "app.ts",
+  "main": "app.js",
   "scripts": {
     "build": "tsc",
-    "start": "ts-node app.ts",
+    "start": "node dist/app.js",
     "dev": "nodemon app.ts",
     "test": "mocha dist/test"
   },
