@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import Blog from "../models/blog";
+import cloudinary from "../cloudinary";
 
 export const blogList = async (
   req: Request,
@@ -16,11 +17,33 @@ export const createBlog = async (
   next: NextFunction
 ) => {
   const { title, description, comments } = req.body;
-  const image = req.file ? req.file.path : ""; // Assuming 'image' is the name of the file field
+  let image; // This will store the URL of the uploaded image
+
+  // Check if there's a file in the request
+  if (req.file) {
+    try {
+      // Upload the file to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path);
+
+      // Get the URL of the uploaded image
+      image = result.secure_url;
+    } catch (error) {
+      console.error("Error uploading image to Cloudinary:", error);
+      return res.status(500).json({ message: "Error uploading image" });
+    }
+  }
+
+  // Create the blog with the image URL
   const blog = new Blog({ title, description, image, comments });
 
-  await blog.save();
-  res.status(200).json({ message: "blog saved successfully" });
+  try {
+    // Save the blog to the database
+    await blog.save();
+    res.status(200).json({ message: "Blog saved successfully" });
+  } catch (error) {
+    console.error("Error saving blog to database:", error);
+    res.status(500).json({ message: "Error saving blog" });
+  }
 };
 
 export const updateBlog = async (

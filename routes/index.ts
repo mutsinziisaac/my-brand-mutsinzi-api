@@ -1,5 +1,4 @@
-import multer from "multer";
-const upload = multer({ dest: "uploads/" });
+import upload from "../multer";
 
 import express, { Request, Response, NextFunction } from "express";
 import {
@@ -29,7 +28,7 @@ router.get("/", function (req: Request, res: Response, next: NextFunction) {
 });
 //blog routes
 router.get("/blogs", blogList);
-router.post("/blogs", upload.single("image"), authenticateToken, createBlog);
+router.post("/blogs", upload.single("image"), createBlog);
 router.put("/blogs/:id", authenticateToken, updateBlog);
 router.delete("/blogs/:id", authenticateToken, deleteBlog);
 
