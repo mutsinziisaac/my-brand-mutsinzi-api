@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response, NextFunction, json } from "express";
 import Blog from "../models/blog";
 import cloudinary from "../cloudinary";
 
@@ -17,15 +17,12 @@ export const createBlog = async (
   next: NextFunction
 ) => {
   const { title, description, comments } = req.body;
-  let image; // This will store the URL of the uploaded image
+  let image;
 
-  // Check if there's a file in the request
   if (req.file) {
     try {
-      // Upload the file to Cloudinary
       const result = await cloudinary.uploader.upload(req.file.path);
 
-      // Get the URL of the uploaded image
       image = result.secure_url;
     } catch (error) {
       console.error("Error uploading image to Cloudinary:", error);
@@ -52,8 +49,18 @@ export const updateBlog = async (
   next: NextFunction
 ) => {
   const id = req.params.id;
+  let image;
 
-  const { title, description, image } = req.body;
+  if (req.file) {
+    try {
+      const result = await cloudinary.uploader.upload(req.file.path);
+      image = result.secure_url;
+    } catch (error) {
+      console.error("error uploading image to cloudinary:", error);
+    }
+  }
+
+  const { title, description } = req.body;
 
   const updatedBlog = await Blog.findByIdAndUpdate(id, {
     title,
@@ -65,7 +72,7 @@ export const updateBlog = async (
     return res.status(404).json({ message: "Blog not found" });
   }
 
-  res.status(200).json({ message: "Blog updated" });
+  res.status(200).json({ message: "Blog updated", updateBlog });
 };
 
 export const deleteBlog = async (
