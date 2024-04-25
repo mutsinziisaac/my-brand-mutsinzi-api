@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 interface IBlog extends Document {
   title: string;
   description: string;
-  image: Buffer;
+  image: string;
   comments?: string[];
   likes: number;
 }
