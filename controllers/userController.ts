@@ -16,7 +16,18 @@ export const createUser = async (
     password: req.body.password,
   });
   await user.save();
-  res.status(200).json({ message: "user created successfully" });
+
+  const payload = {
+    username: user.username,
+    userId: user._id,
+    role: user.role,
+  };
+
+  const accessToken = Jwt.sign(
+    payload,
+    process.env.ACCESS_TOKEN_SECRET as string
+  );
+  res.json({ accessToken: accessToken });
 };
 
 passport.use(
@@ -60,7 +71,7 @@ export const loginUser = async (
       process.env.ACCESS_TOKEN_SECRET as string
     );
     res.json({ accessToken: accessToken });
-  })(req, res, next); // <- Call the passport.authenticate function
+  })(req, res, next);
 };
 
 export const usersList = async (
